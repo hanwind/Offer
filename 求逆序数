@@ -13,7 +13,6 @@ public:
 		int count = 0;
 		if(begin < end)
 		{
-			cout<<"begin = "<<begin<<" end"<<end<<endl;
 			int left = mergeSort(data, begin, mid);
 			int right = mergeSort(data, mid+1, end);
 			count = (left + right + merge(data, begin, end)) %1000000007;
@@ -22,7 +21,7 @@ public:
 	}
 	int merge(vector<int> &data, int low, int high)
 	{
-		vector<int> temp(high-low+1, 0);
+		vector<int> temp(high-low+1, 0);//临时数组存放已排序的区间
 		int mid = (low + high)>>1;
 		int i,j,m;
 		int count = 0;
@@ -31,7 +30,7 @@ public:
 			if(data[i] > data[j])
 			{
 				temp[m] = data[i--];
-				count =(count+ j-mid);
+				count =(count+ j-mid);//如果左侧i下标的数大于右区间的j下标的数，因为左右区间都有序，因此左侧i是大于右区间j左侧的所有数
 			}
 			else
 			{
@@ -41,7 +40,7 @@ public:
                 count %= 1000000007;
 
 		}
-		while(i >= low) temp[m--] = data[i--];
+		while(i >= low) temp[m--] = data[i--];//注意是从区间的右侧往左侧
 		while(j >= (mid+1)) temp[m--] = data[j--];
 		copy(temp.begin(), temp.end(), data.begin()+low);
 		return count;
