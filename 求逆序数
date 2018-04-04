@@ -1,0 +1,49 @@
+class Solution {
+public:
+	int InversePairs(vector<int> data) {
+		if(data.size() <= 0)
+			return 0;
+		return mergeSort(data, 0, data.size()-1) %1000000007;
+
+	}
+	int mergeSort(vector<int> &data, int begin, int end)
+	{
+
+		int mid = (begin + end)>>1;
+		int count = 0;
+		if(begin < end)
+		{
+			cout<<"begin = "<<begin<<" end"<<end<<endl;
+			int left = mergeSort(data, begin, mid);
+			int right = mergeSort(data, mid+1, end);
+			count = (left + right + merge(data, begin, end)) %1000000007;
+		}
+		return count;
+	}
+	int merge(vector<int> &data, int low, int high)
+	{
+		vector<int> temp(high-low+1, 0);
+		int mid = (low + high)>>1;
+		int i,j,m;
+		int count = 0;
+		for(i = mid, j = high, m = temp.size()-1; i >= low && j >= mid+1; m--)
+		{
+			if(data[i] > data[j])
+			{
+				temp[m] = data[i--];
+				count =(count+ j-mid);
+			}
+			else
+			{
+				temp[m] = data[j--];
+			}
+            if(count >= 1000000007)
+                count %= 1000000007;
+
+		}
+		while(i >= low) temp[m--] = data[i--];
+		while(j >= (mid+1)) temp[m--] = data[j--];
+		copy(temp.begin(), temp.end(), data.begin()+low);
+		return count;
+	}
+};
